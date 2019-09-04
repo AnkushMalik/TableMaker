@@ -11,7 +11,10 @@ class TableMaker extends React.Component {
             initialized: false,
             columnscount: 0,
             colDef: [],
-            rowDef: []
+            rowDef: [{
+                id: 235242,
+                coldata: ['Value1', 'value2', true]
+            }]
         }
     }
 
@@ -39,9 +42,23 @@ class TableMaker extends React.Component {
     handleAppendDef = () => {
         this.setState({ columnscount: (this.state.columnscount + 1) })
     }
+    addRows = (list) => {
+
+    }
 
     handleAddRow = () => {
-        console.log('clicked')
+        let new_row_val = Object.values(document.querySelectorAll('#rowform input'))
+        let coldata = []
+        new_row_val.map(e => coldata.push(e.value))
+        let unique_id = Math.floor(Math.random() * 90000) + 100000;
+        let data = {
+            id: unique_id,
+            coldata: coldata
+        }
+        let newState = Object.assign({}, this.state); // Clone the state obj in newState
+        newState['rowDef'].push(data);             // modify newState
+        this.setState(newState);
+        console.log(this.state)
     }
 
     render() {
@@ -94,21 +111,39 @@ class TableMaker extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-
                             {
-                                rowDef.map((e, idx) => (
-                                    <tr>
-                                        < td key={idx} >
-                                            {e['label']}
-                                        </td>
+                                rowDef.map((e) => (
+                                    <tr key={e.id}>
+                                        {
+                                            e.coldata.map((p, idx) => (
+                                                < td key={idx}>
+                                                    {e['coldata'][idx]}
+                                                </td>
+                                            ))
+                                        }
                                     </tr>
                                 ))
                             }
                         </tbody>
                     </table>
-                    <button onClick={this.handleAddRow}>
-                        Add Row
-                    </button>
+                    <div className="add-row-forms">
+                        {
+                            (colDef.length !== 0) ?
+                                (
+                                    <div id='row-form-div'>
+                                        <form id='rowform'>
+                                            {colDef.map((e, i) =>
+                                                <div key={i}>
+                                                    <label>{e['label']} : </label>
+                                                    <input type='text' name={e['label']} />
+                                                </div>
+                                            )}
+                                        </form>
+                                        <button onClick={this.handleAddRow}>Add Row</button>
+                                    </div>
+                                ) : null
+                        }
+                    </div>
                 </div>
             </div>
         )
