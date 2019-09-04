@@ -1,6 +1,8 @@
 import React from 'react'
 import { CustomForm } from '../custom-form/customform.component'
-// import $ from 'jquery'
+import $ from 'jquery'
+
+import './table-maker.styles.css'
 
 class TableMaker extends React.Component {
     constructor(props) {
@@ -27,18 +29,23 @@ class TableMaker extends React.Component {
                 [pair[0]]: pair[1],
             }), {});
             let newState = Object.assign({}, this.state); // Clone the state obj in newState
-            newState['colDef'].push(JSON.stringify(data));             // modify newState
+            newState['colDef'].push(data);             // modify newState
             this.setState(newState);
         })
+        $('.initt').slideUp();
+        $('#table-div').show();
     }
 
     handleAppendDef = () => {
         this.setState({ columnscount: (this.state.columnscount + 1) })
     }
 
+    handleAddRow = () => {
+        console.log('clicked')
+    }
+
     render() {
-        // eslint-disable-next-line
-        const { initialized, columnscount, } = this.state
+        const { initialized, columnscount, colDef, rowDef } = this.state
         return (
             <div className='tablemaker'>
                 <div className="initt">
@@ -53,7 +60,6 @@ class TableMaker extends React.Component {
                                 <span>
                                     <div id='col-defs-div'>
                                         <p> Enter Column Definitions:</p>
-                                        this.
                                         <CustomForm key={0} />
                                         {
                                             [...Array(columnscount)].map((e, i) =>
@@ -72,6 +78,37 @@ class TableMaker extends React.Component {
                                 </span>
                             ) : null
                     }
+                </div>
+                <div id='table-div'>
+                    <table>
+                        <thead>
+                            <tr>
+                                {
+                                    colDef.map((e, idx) => (
+                                        < th key={idx} >
+                                            {e['label']}
+                                        </th>
+                                    ))
+                                }
+                                <th> Actions </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {
+                                rowDef.map((e, idx) => (
+                                    <tr>
+                                        < td key={idx} >
+                                            {e['label']}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                    <button onClick={this.handleAddRow}>
+                        Add Row
+                    </button>
                 </div>
             </div>
         )
