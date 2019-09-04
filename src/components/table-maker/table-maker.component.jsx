@@ -13,7 +13,7 @@ class TableMaker extends React.Component {
             colDef: [],
             rowDef: [{
                 id: 235242,
-                coldata: ['Value1', 'value2', true]
+                coldata: ['Value1', 'value2', 'true']
             }]
         }
     }
@@ -42,11 +42,8 @@ class TableMaker extends React.Component {
     handleAppendDef = () => {
         this.setState({ columnscount: (this.state.columnscount + 1) })
     }
-    addRows = (list) => {
 
-    }
-
-    handleAddRow = () => {
+    addRow = () => {
         let new_row_val = Object.values(document.querySelectorAll('#rowform input'))
         let coldata = []
         new_row_val.map(e => coldata.push(e.value))
@@ -112,17 +109,43 @@ class TableMaker extends React.Component {
                         </thead>
                         <tbody>
                             {
-                                rowDef.map((e) => (
-                                    <tr key={e.id}>
-                                        {
-                                            e.coldata.map((p, idx) => (
-                                                < td key={idx}>
-                                                    {e['coldata'][idx]}
-                                                </td>
-                                            ))
-                                        }
-                                    </tr>
-                                ))
+                                (colDef.length !== 0) ?
+                                    (rowDef.map((e) => (
+                                        <tr key={e.id}>
+                                            {
+                                                e.coldata.map((p, idx) => (
+                                                    < td key={idx} className={e.id}>
+                                                        {(() => {
+                                                            if (colDef[idx]['type'] === 'text') {
+                                                                return (
+                                                                    p
+                                                                )
+                                                            } else if (colDef[idx]['type'] === 'input') {
+                                                                return (
+                                                                    <input type='input' defaultValue={p} />
+                                                                )
+                                                            } else if (colDef[idx]['type'] === 'checkbox') {
+                                                                return (
+                                                                    p === 'true' ?
+                                                                        React.createElement('input', { type: 'checkbox', defaultChecked: true })
+                                                                        :
+                                                                        React.createElement('input', { type: 'checkbox', defaultChecked: false })
+                                                                )
+                                                            }
+                                                        })()}
+                                                        {/* {this.renderSwitch(colDef[idx]['type'], `cellvalue-${e.id}-${idx}`, p)}
+                                                        <span className='cellspan' id={`cellvalue-${e.id}-${idx}`}>
+                                                        </span>
+                                                        <input value='' type='text'></input> */}
+                                                    </td>
+                                                ))
+                                            }
+                                            <td>
+                                                <button>del</button>
+                                                <button>upd</button>
+                                            </td>
+                                        </tr>
+                                    ))) : null
                             }
                         </tbody>
                     </table>
@@ -139,7 +162,7 @@ class TableMaker extends React.Component {
                                                 </div>
                                             )}
                                         </form>
-                                        <button onClick={this.handleAddRow}>Add Row</button>
+                                        <button onClick={this.addRow}>Add Row</button>
                                     </div>
                                 ) : null
                         }
