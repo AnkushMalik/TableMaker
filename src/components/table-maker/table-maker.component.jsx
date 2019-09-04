@@ -1,6 +1,6 @@
 import React from 'react'
 import { CustomForm } from '../custom-form/customform.component'
-import { CustomButton } from '../custom-button/custombutton.component'
+// import { CustomButton } from '../custom-button/custombutton.component'
 import $ from 'jquery'
 
 import './table-maker.styles.css'
@@ -142,7 +142,11 @@ class TableMaker extends React.Component {
                             <tr>
                                 {
                                     colDef.map((e, idx) => (
-                                        < th key={idx} >
+                                        < th key={idx}
+                                            style={{
+                                                width: e['width']
+                                            }}
+                                        >
                                             {e['label']}
                                         </th>
                                     ))
@@ -202,11 +206,6 @@ class TableMaker extends React.Component {
                                             )}
                                         </form>
                                         {
-                                            //     <CustomButton
-                                            //     className='rowDefHandlerBtn'
-                                            //     handleClick={this.addRow}>
-                                            //     Submit ColData
-                                            // </CustomButton>
                                             <button id='row-def-handler' onClick={this.addRow}>Add Row</button>
                                         }
 
