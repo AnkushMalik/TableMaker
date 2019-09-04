@@ -58,6 +58,21 @@ class TableMaker extends React.Component {
         console.log(this.state)
     }
 
+    deleteRow = (e) => {
+        let unique_id = parseInt(e.target.parentElement.parentElement.className)
+        console.log(unique_id)
+        let resultant_rows = []
+        let newState = Object.assign({}, this.state); // Clone the state obj in newState
+        newState.rowDef.map(e => {
+            if (e.id !== unique_id) {
+                resultant_rows.push(e)
+            }
+        }
+        )
+        newState.rowDef = resultant_rows
+        this.setState(newState);
+        return;
+    }
     render() {
         const { initialized, columnscount, colDef, rowDef } = this.state
         return (
@@ -111,10 +126,10 @@ class TableMaker extends React.Component {
                             {
                                 (colDef.length !== 0) ?
                                     (rowDef.map((e) => (
-                                        <tr key={e.id}>
+                                        <tr key={e.id} className={e.id}>
                                             {
                                                 e.coldata.map((p, idx) => (
-                                                    < td key={idx} className={e.id}>
+                                                    < td key={idx} >
                                                         {(() => {
                                                             if (colDef[idx]['type'] === 'text') {
                                                                 return (
@@ -141,7 +156,7 @@ class TableMaker extends React.Component {
                                                 ))
                                             }
                                             <td>
-                                                <button>del</button>
+                                                <button onClick={this.deleteRow}>del</button>
                                                 <button>upd</button>
                                             </td>
                                         </tr>
