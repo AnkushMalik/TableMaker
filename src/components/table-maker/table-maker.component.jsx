@@ -12,11 +12,7 @@ class TableMaker extends React.Component {
             initialized: false,
             columnscount: 0,
             colDef: [],
-            rowDef: [{
-                id: 235242,
-                coldata: ['Value1', 'value2', 'true']
-            }],
-            toUpdate: false
+            rowDef: []
         }
     }
 
@@ -54,6 +50,7 @@ class TableMaker extends React.Component {
         })
         this.setState(newState);
         document.getElementById('row-def-handler').removeAttribute('idtoupdate')
+        console.log(this.state)
     }
 
     addRow = (e) => {
@@ -102,7 +99,7 @@ class TableMaker extends React.Component {
     }
 
     render() {
-        const { initialized, columnscount, colDef, rowDef, toUpdate } = this.state
+        const { initialized, columnscount, colDef, rowDef } = this.state
         return (
             <div className='tablemaker'>
                 <div className="initt">
@@ -163,11 +160,7 @@ class TableMaker extends React.Component {
                                                 e.coldata.map((p, idx) => (
                                                     < td key={idx} >
                                                         {(() => {
-                                                            if (colDef[idx]['type'] === 'text') {
-                                                                return (
-                                                                    p
-                                                                )
-                                                            } else if (colDef[idx]['type'] === 'input') {
+                                                            if (colDef[idx]['type'] === 'input') {
                                                                 return (
                                                                     <input type='input' defaultValue={p} />
                                                                 )
@@ -178,14 +171,18 @@ class TableMaker extends React.Component {
                                                                         :
                                                                         React.createElement('input', { type: 'checkbox', defaultChecked: false })
                                                                 )
+                                                            } else {
+                                                                return (
+                                                                    p
+                                                                )
                                                             }
                                                         })()}
                                                     </td>
                                                 ))
                                             }
                                             <td>
-                                                <button onClick={this.deleteRow}>del</button>
-                                                <button onClick={this.updateRow}>upd</button>
+                                                <button onClick={this.deleteRow}>Delete</button>
+                                                <button onClick={this.updateRow}>Update</button>
                                             </td>
                                         </tr>
                                     ))) : null

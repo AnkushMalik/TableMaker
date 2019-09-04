@@ -1,15 +1,22 @@
+.tablemaker{
+    padding: 50px;
+}
 #table-div{
     display: none;
 }
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
 }
   
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+}
+
+#col-defs-div, #row-form-div{
+    padding: 30px;
 }
 
 tr:nth-child(even) {
