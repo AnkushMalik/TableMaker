@@ -1,5 +1,6 @@
 import React from 'react'
 import { CustomForm } from '../custom-form/customform.component'
+import { CustomButton } from '../custom-button/custombutton.component'
 import $ from 'jquery'
 
 import './table-maker.styles.css'
@@ -14,7 +15,8 @@ class TableMaker extends React.Component {
             rowDef: [{
                 id: 235242,
                 coldata: ['Value1', 'value2', 'true']
-            }]
+            }],
+            toUpdate: false
         }
     }
 
@@ -43,10 +45,25 @@ class TableMaker extends React.Component {
         this.setState({ columnscount: (this.state.columnscount + 1) })
     }
 
-    addRow = () => {
+    update_rowDef = (req_coldata, id) => {
+        let newState = Object.assign({}, this.state);
+        newState.rowDef.map(e => {
+            if (e.id === id) {
+                e.coldata = req_coldata
+            }
+        })
+        this.setState(newState);
+        document.getElementById('row-def-handler').removeAttribute('idtoupdate')
+    }
+
+    addRow = (e) => {
         let new_row_val = Object.values(document.querySelectorAll('#rowform input'))
         let coldata = []
-        new_row_val.map(e => coldata.push(e.value))
+        new_row_val.map(p => coldata.push(p.value))
+        let idToUpdate = e.target.getAttribute('idToUpdate')
+        if (idToUpdate) {
+            return this.update_rowDef(coldata, parseInt(idToUpdate))
+        }
         let unique_id = Math.floor(Math.random() * 90000) + 100000;
         let data = {
             id: unique_id,
@@ -55,12 +72,10 @@ class TableMaker extends React.Component {
         let newState = Object.assign({}, this.state); // Clone the state obj in newState
         newState['rowDef'].push(data);             // modify newState
         this.setState(newState);
-        console.log(this.state)
     }
 
     deleteRow = (e) => {
         let unique_id = parseInt(e.target.parentElement.parentElement.className)
-        console.log(unique_id)
         let resultant_rows = []
         let newState = Object.assign({}, this.state); // Clone the state obj in newState
         newState.rowDef.map(e => {
@@ -71,10 +86,23 @@ class TableMaker extends React.Component {
         )
         newState.rowDef = resultant_rows
         this.setState(newState);
-        return;
     }
+
+    updateRow = (e) => {
+        let unique_id = parseInt(e.target.parentElement.parentElement.className)
+        let rowforminputs = Object.values(document.querySelectorAll('#rowform input'))
+        let req_coldata = []
+        this.state.rowDef.map(e => {
+            if (e.id === unique_id) {
+                req_coldata = e.coldata
+            }
+        })
+        rowforminputs.map((e, idx) => e.value = req_coldata[idx])
+        $('#row-def-handler').attr('idtoupdate', unique_id)
+    }
+
     render() {
-        const { initialized, columnscount, colDef, rowDef } = this.state
+        const { initialized, columnscount, colDef, rowDef, toUpdate } = this.state
         return (
             <div className='tablemaker'>
                 <div className="initt">
@@ -148,16 +176,12 @@ class TableMaker extends React.Component {
                                                                 )
                                                             }
                                                         })()}
-                                                        {/* {this.renderSwitch(colDef[idx]['type'], `cellvalue-${e.id}-${idx}`, p)}
-                                                        <span className='cellspan' id={`cellvalue-${e.id}-${idx}`}>
-                                                        </span>
-                                                        <input value='' type='text'></input> */}
                                                     </td>
                                                 ))
                                             }
                                             <td>
                                                 <button onClick={this.deleteRow}>del</button>
-                                                <button>upd</button>
+                                                <button onClick={this.updateRow}>upd</button>
                                             </td>
                                         </tr>
                                     ))) : null
@@ -177,7 +201,15 @@ class TableMaker extends React.Component {
                                                 </div>
                                             )}
                                         </form>
-                                        <button onClick={this.addRow}>Add Row</button>
+                                        {
+                                            //     <CustomButton
+                                            //     className='rowDefHandlerBtn'
+                                            //     handleClick={this.addRow}>
+                                            //     Submit ColData
+                                            // </CustomButton>
+                                            <button id='row-def-handler' onClick={this.addRow}>Add Row</button>
+                                        }
+
                                     </div>
                                 ) : null
                         }
