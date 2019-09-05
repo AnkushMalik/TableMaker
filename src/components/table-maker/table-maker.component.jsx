@@ -1,6 +1,6 @@
 import React from 'react'
 import { CustomForm } from '../custom-form/customform.component'
-// import { CustomButton } from '../custom-button/custombutton.component'
+import { CustomButton } from '../custom-button/custombutton.component'
 import $ from 'jquery'
 
 import './table-maker.styles.css'
@@ -108,11 +108,9 @@ class TableMaker extends React.Component {
         return (
             <div className='tablemaker'>
                 <div className="initt">
-                    <button
-                        className=' waves-light btn'
-                        onClick={this.initializeTable}>
+                    <CustomButton handleClick={this.initializeTable}>
                         Initialize Table
-                    </button>
+                    </CustomButton>
                     {
                         initialized ?
                             (
@@ -125,15 +123,8 @@ class TableMaker extends React.Component {
                                                 <CustomForm key={i + 1} />)
                                         }
                                     </div>
-                                    <button className='form-appender' onClick={this.handleAppendDef}>
-                                        Add Definition
-                                    </button>
-                                    <button
-                                        id='create_table'
-                                        className='waves-effect waves-light btn'
-                                        onClick={this.handlecreateTable}>
-                                        Create
-                                    </button>
+                                    <CustomButton handleClick={this.handleAppendDef} className='form-appender'>Add Definition</CustomButton>
+                                    <CustomButton handleClick={this.handlecreateTable} id='create_table'>Create</CustomButton>
                                 </span>
                             ) : null
                     }
@@ -186,8 +177,8 @@ class TableMaker extends React.Component {
                                                 ))
                                             }
                                             <td>
-                                                <button onClick={this.deleteRow}>Delete</button>
-                                                <button onClick={this.updateRow}>Update</button>
+                                                <CustomButton handleClick={this.deleteRow}>Delete</CustomButton>
+                                                <CustomButton handleClick={this.updateRow}>Update</CustomButton>
                                             </td>
                                         </tr>
                                     ))) : null
@@ -207,10 +198,7 @@ class TableMaker extends React.Component {
                                                 </div>
                                             )}
                                         </form>
-                                        {
-                                            <button id='row-def-handler' onClick={this.addRow}>Submit</button>
-                                        }
-
+                                        <CustomButton handleClick={this.addRow} id='row-def-handler'>Submit</CustomButton>
                                     </div>
                                 ) : null
                         }

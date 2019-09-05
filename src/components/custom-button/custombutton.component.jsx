@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const CustomButton = ({ children, handleClick, idtoUpdate }) => (
-    <button onClick={() => handleClick(idtoUpdate)}>
+export const CustomButton = ({ children, handleClick, ...otherProps }) => (
+    <button onClick={handleClick}  {...otherProps}>
         {children}
     </button>
 );
