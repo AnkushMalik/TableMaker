@@ -49,8 +49,7 @@ class TableMaker extends React.Component {
             }
         })
         this.setState(newState);
-        document.getElementById('row-def-handler').removeAttribute('idtoupdate')
-        console.log(this.state)
+        this.clearRowForm();
     }
 
     addRow = (e) => {
@@ -69,6 +68,7 @@ class TableMaker extends React.Component {
         let newState = Object.assign({}, this.state); // Clone the state obj in newState
         newState['rowDef'].push(data);             // modify newState
         this.setState(newState);
+        this.clearRowForm();
     }
 
     deleteRow = (e) => {
@@ -96,6 +96,11 @@ class TableMaker extends React.Component {
         })
         rowforminputs.map((e, idx) => e.value = req_coldata[idx])
         $('#row-def-handler').attr('idtoupdate', unique_id)
+    }
+
+    clearRowForm = () => {
+        document.querySelectorAll('#rowform input').forEach(e => e.value = '')
+        document.getElementById('row-def-handler').removeAttribute('idtoupdate')
     }
 
     render() {
@@ -148,7 +153,7 @@ class TableMaker extends React.Component {
                                         </th>
                                     ))
                                 }
-                                <th> Actions </th>
+                                <th className='actions-thead'> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,7 +208,7 @@ class TableMaker extends React.Component {
                                             )}
                                         </form>
                                         {
-                                            <button id='row-def-handler' onClick={this.addRow}>Add Row</button>
+                                            <button id='row-def-handler' onClick={this.addRow}>Submit</button>
                                         }
 
                                     </div>
