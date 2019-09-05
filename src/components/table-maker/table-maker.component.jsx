@@ -123,7 +123,7 @@ class TableMaker extends React.Component {
                                                 <CustomForm key={i + 1} />)
                                         }
                                     </div>
-                                    <CustomButton handleClick={this.handleAppendDef} className='form-appender'>Add Definition</CustomButton>
+                                    <CustomButton handleClick={this.handleAppendDef}>Add Definition</CustomButton>
                                     <CustomButton handleClick={this.handlecreateTable} id='create_table'>Create</CustomButton>
                                 </span>
                             ) : null
