@@ -16,10 +16,12 @@ class TableMaker extends React.Component {
         }
     }
 
+    //initialize the table creation process ; show column definition forms
     initializeTable = () => {
         this.setState({ initialized: true });
     }
 
+    //take data from column definition forms and make it into a json obj for state.colDef
     handlecreateTable = () => {
         let forms = document.querySelectorAll('.custom-form');
         // eslint-disable-next-line
@@ -37,10 +39,12 @@ class TableMaker extends React.Component {
         $('#table-div').show();
     }
 
+    //this method just handles the appending of column Definition form
     handleAppendDef = () => {
         this.setState({ columnscount: (this.state.columnscount + 1) })
     }
 
+    //updates state.rowDef by updating the respective json element using row's id
     update_rowDef = (req_coldata, id) => {
         let newState = Object.assign({}, this.state);
         newState.rowDef.forEach((e) => {
@@ -52,6 +56,7 @@ class TableMaker extends React.Component {
         this.clearRowForm();
     }
 
+    //take input from rowform and push it into state.rowDef
     addRow = (e) => {
         let new_row_val = Object.values(document.querySelectorAll('#rowform input'))
         let coldata = []
@@ -71,6 +76,7 @@ class TableMaker extends React.Component {
         this.clearRowForm();
     }
 
+    // delete a rowDef element by id matching
     deleteRow = (e) => {
         let unique_id = parseInt(e.target.parentElement.parentElement.className)
         let resultant_rows = []
@@ -85,6 +91,7 @@ class TableMaker extends React.Component {
         this.setState(newState);
     }
 
+    //UpdateRow method take the target and push the data to rowform, for user to update that particular row.
     updateRow = (e) => {
         let unique_id = parseInt(e.target.parentElement.parentElement.className)
         let rowforminputs = Object.values(document.querySelectorAll('#rowform input'))
@@ -98,6 +105,7 @@ class TableMaker extends React.Component {
         $('#row-def-handler').attr('idtoupdate', unique_id)
     }
 
+    // just clears rowform everytime addRow or updateRow is called.
     clearRowForm = () => {
         document.querySelectorAll('#rowform input').forEach(e => e.value = '')
         document.getElementById('row-def-handler').removeAttribute('idtoupdate')
@@ -114,7 +122,7 @@ class TableMaker extends React.Component {
                     {
                         initialized ?
                             (
-                                <span>
+                                <div>
                                     <div id='col-defs-div'>
                                         <p> Enter Column Definitions:</p>
                                         <CustomForm key={0} />
@@ -125,7 +133,7 @@ class TableMaker extends React.Component {
                                     </div>
                                     <CustomButton handleClick={this.handleAppendDef}>Add Definition</CustomButton>
                                     <CustomButton handleClick={this.handlecreateTable} id='create_table'>Create</CustomButton>
-                                </span>
+                                </div>
                             ) : null
                     }
                 </div>
