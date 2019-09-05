@@ -43,7 +43,7 @@ class TableMaker extends React.Component {
 
     update_rowDef = (req_coldata, id) => {
         let newState = Object.assign({}, this.state);
-        newState.rowDef.map(e => {
+        newState.rowDef.forEach((e) => {
             if (e.id === id) {
                 e.coldata = req_coldata
             }
@@ -75,12 +75,12 @@ class TableMaker extends React.Component {
         let unique_id = parseInt(e.target.parentElement.parentElement.className)
         let resultant_rows = []
         let newState = Object.assign({}, this.state); // Clone the state obj in newState
-        newState.rowDef.map(e => {
+        newState.rowDef.forEach((e) => {
             if (e.id !== unique_id) {
                 resultant_rows.push(e)
             }
-        }
-        )
+        })
+
         newState.rowDef = resultant_rows
         this.setState(newState);
     }
@@ -89,7 +89,7 @@ class TableMaker extends React.Component {
         let unique_id = parseInt(e.target.parentElement.parentElement.className)
         let rowforminputs = Object.values(document.querySelectorAll('#rowform input'))
         let req_coldata = []
-        this.state.rowDef.map(e => {
+        this.state.rowDef.forEach((e) => {
             if (e.id === unique_id) {
                 req_coldata = e.coldata
             }
@@ -162,14 +162,14 @@ class TableMaker extends React.Component {
                                                         {(() => {
                                                             if (colDef[idx]['type'] === 'input') {
                                                                 return (
-                                                                    <input type='input' defaultValue={p} />
+                                                                    <input type='input' value={p} readOnly />
                                                                 )
                                                             } else if (colDef[idx]['type'] === 'checkbox') {
                                                                 return (
                                                                     p === 'true' ?
-                                                                        React.createElement('input', { type: 'checkbox', defaultChecked: true })
+                                                                        React.createElement('input', { type: 'checkbox', checked: true, readOnly: true })
                                                                         :
-                                                                        React.createElement('input', { type: 'checkbox', defaultChecked: false })
+                                                                        React.createElement('input', { type: 'checkbox', checked: false, readOnly: true })
                                                                 )
                                                             } else {
                                                                 return (
