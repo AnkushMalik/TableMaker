@@ -3,9 +3,15 @@ import TableMaker from '../components/table-maker/table-maker.component'
 
 import './home.styles.css'
 
-export const HomePage = () => (
-    <div className="homepage">
-        <h1> TableMaker </h1>
-        <TableMaker />
-    </div>
-)
+
+export const HomePage = () => {
+    let refreshPage = () => {
+        window.location.reload();
+    }
+    return (
+        <div className="homepage">
+            <h1 onClick={refreshPage}> TableMaker </h1>
+            <TableMaker />
+        </div >
+    )
+}
